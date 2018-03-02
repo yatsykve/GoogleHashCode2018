@@ -8,26 +8,15 @@ import java.util.List;
  * Date: 3/1/18.
  */
 @Data
-public class Car implements Comparable<Integer> {
+public class Car {
 
-    private Integer orderNum;
     private List<Integer> orders = new ArrayList<>();
-    private int time = 0;
     private int x = 0;
     private int y = 0;
-
-    public Car(int i) {
-        orderNum = i;
-    }
+    private int time = 0;
 
     public void setOrder(int order) {
         orders.add(order);
-    }
-
-
-    @Override
-    public int compareTo(Integer o) {
-        return time - o;
     }
 
 }

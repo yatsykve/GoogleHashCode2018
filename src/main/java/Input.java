@@ -5,7 +5,7 @@ import lombok.Data;
  * Date: 3/1/18.
  */
 @Data
-public class InputData {
+public class Input {
 
     private int rows;
     private int columns;

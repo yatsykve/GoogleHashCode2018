@@ -7,8 +7,6 @@ import lombok.Data;
 @Data
 public class Ride {
 
-    private int rideNum;
-
     private int startX;
     private int startY;
     private int finishX;
@@ -16,6 +14,8 @@ public class Ride {
     private int earliestStart;
     private int latestFinish;
 
+    private int rideNum;
     private int distance;
     private int latestStart;
+
 }

@@ -13,8 +13,6 @@ import java.util.Scanner;
  */
 public class Main {
 
-    InputData data;
-
     public static void main(String[] args) throws Exception {
         Main main = new Main();
         main.go("a_example.out", "/home/iatsyk/work/hashcode/test/src/main/java/a_example.in");
@@ -24,36 +22,38 @@ public class Main {
         main.go("e_high_bonus.out", "/home/iatsyk/work/hashcode/test/src/main/java/e_high_bonus.in");
     }
 
-    void go(String out, String in) throws Exception {
+    private void go(String out, String in) throws Exception {
         List<Ride> rides = new ArrayList<>();
+        Input input;
         int rideNum = 0;
         try (Scanner scanner = new Scanner(Paths.get(in))) {
-            data = parseData(scanner.nextLine());
+            input = parseInput(scanner.nextLine());
             while (scanner.hasNextLine()) {
                 rides.add(parseRide(scanner.nextLine(), rideNum));
                 rideNum++;
             }
         }
         List<Car> cars = new ArrayList<>();
-        for (int i = 1; i <= data.getVehicles(); i++) {
-            cars.add(new Car(i));
+        for (int i = 1; i <= input.getVehicles(); i++) {
+            cars.add(new Car());
         }
+
         Ride nextRide;
         do {
-//                nextRide = findNextRideStepan(rides, car, nextRide);
             cars.sort(Comparator.comparingInt(Car::getTime));
             Car car = cars.iterator().next();
-            nextRide = findNextRideSerhii(rides, car);
+            nextRide = findNextRide(rides, car, input.getBonus());
             if (nextRide != null) {
                 recalculateCar(nextRide, car);
                 rides.remove(nextRide);
             }
         } while (nextRide != null);
+
         System.out.println(rides.size());
         printResult(out, cars);
     }
 
-    private Ride findNextRideSerhii(List<Ride> rides, Car car) {
+    private Ride findNextRide(List<Ride> rides, Car car, int bonus) {
         float ppt = -1;
         Ride result = null;
 
@@ -61,10 +61,10 @@ public class Main {
             if (car.getTime() + calcDistanceToRide(ride, car) > ride.getLatestStart()) {
                 continue;
             }
-            int bonus = ifBonusPossible(ride, car) ? data.getBonus() : 0;
+            int bonusAmount = ifBonusPossible(ride, car) ? bonus : 0;
             int waitTime = ride.getEarliestStart() - (car.getTime() + calcDistanceToRide(ride, car));
             waitTime = waitTime < 0 ? 0 : waitTime;
-            float newPPT = (float) (ride.getDistance() + bonus * 2) / (float) (calcDistanceToRide(ride, car) + ride.getDistance() * 10 + waitTime);
+            float newPPT = (float) (ride.getDistance() + bonusAmount) / (float) (calcDistanceToRide(ride, car) + ride.getDistance() + waitTime);
             if (ppt < newPPT) {
                 ppt = newPPT;
                 result = ride;
@@ -73,7 +73,7 @@ public class Main {
         return result;
     }
 
-    boolean ifBonusPossible(Ride ride, Car car) {
+    private boolean ifBonusPossible(Ride ride, Car car) {
         return car.getTime() + calcDistanceToRide(ride, car) < ride.getEarliestStart();
     }
 
@@ -86,23 +86,23 @@ public class Main {
         car.setOrder(ride.getRideNum());
     }
 
-    int calcDistanceToRide(Ride ride, Car car) {
+    private int calcDistanceToRide(Ride ride, Car car) {
         return Math.abs(ride.getStartX() - car.getX()) + Math.abs(ride.getStartY() - car.getY());
     }
 
-    private Ride parseRide(String ride, int rideNum) {
-        Ride result = new Ride();
-        String[] split = ride.split(" ");
-        result.setStartX(Integer.valueOf(split[0]));
-        result.setStartY(Integer.valueOf(split[1]));
-        result.setFinishX(Integer.valueOf(split[2]));
-        result.setFinishY(Integer.valueOf(split[3]));
-        result.setEarliestStart(Integer.valueOf(split[4]));
-        result.setLatestFinish(Integer.valueOf(split[5]));
-        result.setDistance(Math.abs(result.getFinishX() - result.getStartX()) + Math.abs(result.getFinishY() - result.getStartY()));
-        result.setLatestStart(result.getLatestFinish() - result.getDistance());
-        result.setRideNum(rideNum);
-        return result;
+    private Ride parseRide(String rideStr, int rideNum) {
+        Ride ride = new Ride();
+        String[] split = rideStr.split(" ");
+        ride.setStartX(Integer.valueOf(split[0]));
+        ride.setStartY(Integer.valueOf(split[1]));
+        ride.setFinishX(Integer.valueOf(split[2]));
+        ride.setFinishY(Integer.valueOf(split[3]));
+        ride.setEarliestStart(Integer.valueOf(split[4]));
+        ride.setLatestFinish(Integer.valueOf(split[5]));
+        ride.setDistance(Math.abs(ride.getFinishX() - ride.getStartX()) + Math.abs(ride.getFinishY() - ride.getStartY()));
+        ride.setLatestStart(ride.getLatestFinish() - ride.getDistance());
+        ride.setRideNum(rideNum);
+        return ride;
     }
 
     private void printResult(String out, List<Car> cars) throws IOException {
@@ -119,16 +119,16 @@ public class Main {
         Files.write(path, str.getBytes());
     }
 
-    private InputData parseData(String data) {
-        InputData result = new InputData();
-        String[] split = data.split(" ");
-        result.setRows(Integer.valueOf(split[0]));
-        result.setColumns(Integer.valueOf(split[1]));
-        result.setVehicles(Integer.valueOf(split[2]));
-        result.setRides(Integer.valueOf(split[3]));
-        result.setBonus(Integer.valueOf(split[4]));
-        result.setSteps(Integer.valueOf(split[5]));
-        return result;
+    private Input parseInput(String inoutStr) {
+        Input input = new Input();
+        String[] split = inoutStr.split(" ");
+        input.setRows(Integer.valueOf(split[0]));
+        input.setColumns(Integer.valueOf(split[1]));
+        input.setVehicles(Integer.valueOf(split[2]));
+        input.setRides(Integer.valueOf(split[3]));
+        input.setBonus(Integer.valueOf(split[4]));
+        input.setSteps(Integer.valueOf(split[5]));
+        return input;
     }
 
 
