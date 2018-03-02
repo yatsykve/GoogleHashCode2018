@@ -21,6 +21,12 @@ public class Main {
         main.go("d_metropolis.out", "/home/iatsyk/work/hashcode/test/src/main/java/d_metropolis.in");
         main.go("e_high_bonus.out", "/home/iatsyk/work/hashcode/test/src/main/java/e_high_bonus.in");
     }
+    //not completed rides
+    //0
+    //6
+    //1241
+    //786
+    //20
 
     private void go(String out, String in) throws Exception {
         List<Ride> rides = new ArrayList<>();
@@ -64,7 +70,7 @@ public class Main {
             int bonusAmount = ifBonusPossible(ride, car) ? bonus : 0;
             int waitTime = ride.getEarliestStart() - (car.getTime() + calcDistanceToRide(ride, car));
             waitTime = waitTime < 0 ? 0 : waitTime;
-            float newPPT = (float) (ride.getDistance() + bonusAmount) / (float) (calcDistanceToRide(ride, car) + ride.getDistance() + waitTime);
+            float newPPT = (float) (ride.getDistance() + bonusAmount * 2) / (float) (calcDistanceToRide(ride, car) + ride.getDistance() / 5 + waitTime);
             if (ppt < newPPT) {
                 ppt = newPPT;
                 result = ride;
