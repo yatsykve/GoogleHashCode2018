@@ -15,11 +15,11 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Main main = new Main();
-        main.go("a_example.out", "/home/iatsyk/work/hashcode/test/src/main/java/a_example.in");
-        main.go("b_should_be_easy.out", "/home/iatsyk/work/hashcode/test/src/main/java/b_should_be_easy.in");
-        main.go("c_no_hurry.out", "/home/iatsyk/work/hashcode/test/src/main/java/c_no_hurry.in");
-        main.go("d_metropolis.out", "/home/iatsyk/work/hashcode/test/src/main/java/d_metropolis.in");
-        main.go("e_high_bonus.out", "/home/iatsyk/work/hashcode/test/src/main/java/e_high_bonus.in");
+        main.go("a_example.out", "/home/iatsyk/work/hashcode/test/a_example.in");
+        main.go("b_should_be_easy.out", "/home/iatsyk/work/hashcode/test/b_should_be_easy.in");
+        main.go("c_no_hurry.out", "/home/iatsyk/work/hashcode/test/c_no_hurry.in");
+        main.go("d_metropolis.out", "/home/iatsyk/work/hashcode/test/d_metropolis.in");
+        main.go("e_high_bonus.out", "/home/iatsyk/work/hashcode/test/e_high_bonus.in");
     }
     //not completed rides
     //0
